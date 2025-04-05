@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏥 Urban Health and Wellness Center</title>
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #ff7e5f;
+            --accent: #6bd6e1;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --info: #17a2b8;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            margin: 0;
+            padding: 20px;
+            color: var(--dark);
+        }
+        
+        /* PC View Styles */
+        .pc-view .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pc-view header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .pc-view .current-date {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        /* Mobile App View Styles */
+        .mobile-view {
+            display: none;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .mobile-view .app-container {
+            width: 100%;
+            min-height: 100vh;
+            background: #f5f7fa;
+        }
+        
+        .mobile-view .app-header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .mobile-view .app-header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .mobile-view .app-content {
+            padding: 80px 15px 70px;
+        }
+        
+        .mobile-view .stats-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .mobile-view .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .mobile-view .tabs {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .mobile-view .tab-content {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .mobile-view .app-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        
+        .mobile-view .footer-tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+        
+        .mobile-view .footer-tab.active {
+            color: var(--primary);
+        }
+        
+        .mobile-view .footer-icon {
+            font-size: 1.5rem;
+            margin-bottom: 3px;
+        }
+        
+        /* Common Styles */
+        .current-time {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+        
+        .current-day-date {
+            font-size: 1rem;
+        }
+        
+        .device-info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .charging-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .charging-icon {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 5px 0;
+        }
+        
+        .ip-display {
+            font-size: 0.9rem;
+            color: var(--dark);
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .refresh-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border-radius: 8px;
+            background: white;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .token-display {
+            background: var(--secondary);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .search-box input {
+            flex: 1;
+        }
+        
+        /* Enhanced search suggestions dropdown */
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 0 0 6px 6px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .search-suggestions.show {
+            display: block;
+        }
+        
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .suggestion-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .suggestion-name {
+            font-weight: 600;
+        }
+        
+        .suggestion-details {
+            font-size: 0.8rem;
+            color: #666;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .patient-details {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            width: 150px;
+        }
+        
+        .patient-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .patient-header-item {
+            font-weight: bold;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        .auto-save-status {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--success);
+            margin-top: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: var(--dark);
+            font-size: 14px;
+        }
+
+        /* WhatsApp Chat Box Styles */
+        .whatsapp-chat-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-chat-box:hover {
+            background-color: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .whatsapp-chat-box img {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+        }
+        
+        /* Monthly breakdown styles */
+        .monthly-breakdown {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .monthly-breakdown.show {
+            display: block;
+        }
+        
+        .month-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .month-name {
+            font-weight: 600;
+        }
+        
+        .month-count {
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .toggle-breakdown {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        /* New style for external links */
+        .external-link {
+            margin-top: 10px;
+            font-size: 0.8rem;
+        }
+        
+        .external-link a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .external-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .external-links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 1024px) {
+            /* Tablet-specific styles */
+            .pc-view .stat-box {
+                min-width: calc(33% - 20px);
+            }
+            
+            .pc-view .tabs {
+                flex-direction: row;
+            }
+            
+            .pc-view .detail-row {
+                flex-direction: row;
+            }
+            
+            .pc-view .detail-label {
+                width: 150px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .pc-view {
+                display: none;
+            }
+            
+            .mobile-view {
+                display: block;
+            }
+            
+            .pc-view .tabs {
+                flex-direction: column;
+            }
+            
+            .pc-view .detail-row {
+                flex-direction: column;
+            }
+            
+            .pc-view .detail-label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            
+            .pc-view .current-date {
+                position: static;
+                margin-top: 10px;
+                display: inline-block;
+                font-size: 1rem;
+            }
+            
+            .pc-view .current-time {
+                font-size: 1.2rem;
+            }
+            
+            .pc-view .current-day-date {
+                font-size: 0.9rem;
+            }
+            
+            .pc-view .device-info {
+                position: static;
+                margin-top: 10px;
+                display: inline-block;
+                font-size: 0.8rem;
+            }
+            
+            .pc-view .patient-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .whatsapp-chat-box {
+                bottom: 15px;
+                right: 15px;
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+            
+            .pc-view .stats-container {
+                flex-direction: column;
+            }
+            
+            .pc-view .stat-box {
+                min-width: 100%;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="pc-view">
+    <!-- PC View Content -->
+    <div class="pc-view">
+        <!-- WhatsApp Chat Box -->
+        <div class="whatsapp-chat-box">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Logo">
+            WhatsApp Support
+        </div>
+
+        <div class="container">
+            <header>
+                <h1>🏥 Urban Health and Wellness Center</h1>
+                <p>Auto-Saving Patient Management System</p>
+                <div class="current-date" id="currentDate">
+                    <div class="current-time" id="currentTime"></div>
+                    <div class="current-day-date" id="currentDayDate"></div>
+                </div>
+                <div class="device-info" id="deviceInfo">
+                    <div id="deviceName">Loading device...</div>
+                    <div class="charging-status" id="chargingStatus">
+                        <svg class="charging-icon" id="chargingIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 1v4h1v14H7v4h10v-4h-1V5h1V1H7zm5 8h-1v6h1l3-6h-3l-1-2v-2h1l2 4z"/>
+                        </svg>
+                        <span id="batteryLevel">Checking battery...</span>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Statistics Container -->
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div>Today's OPD Registrations</div>
+                    <div class="stat-value" id="todayCount">0</div>
+                    <div class="ip-display">
+                        <span id="visitorIp">Loading IP...</span>
+                        <button class="refresh-btn" onclick="updateStats()" title="Refresh">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Third external link -->
+                    <div class="external-link">
+                        <a href="https://aarogya.vmc.gov.in/PvtHosp/PrivateLandingMenu/index" target="_blank">View Aarogya Portal</a>
+                    </div>
+                </div>
+                
+                <div class="stat-box">
+                    <div>This Month's OPD Registrations</div>
+                    <div class="stat-value" id="monthCount">0</div>
+                    <div class="ip-display">
+                        <span>Live Visitor Count: <span id="liveVisitorCount">1</span></span>
+                    </div>
+                    <!-- First external link -->
+                    <div class="external-link">
+                        <a href="https://aam.mohfw.gov.in/beta/Dashboard/welcome/" target="_blank">View AAM Dashboard</a>
+                    </div>
+                </div>
+                
+                <div class="stat-box">
+                    <div>This Year's OPD Registrations</div>
+                    <div class="stat-value" id="yearCount">0</div>
+                    <button class="toggle-breakdown" onclick="toggleMonthlyBreakdown()">▼ Monthly Breakdown</button>
+                    <div class="monthly-breakdown" id="monthlyBreakdown">
+                        <!-- Monthly data will be inserted here -->
+                    </div>
+                    <div class="ip-display">
+                        <span>Last Updated: <span id="lastUpdated">Just now</span></span>
+                    </div>
+                    <!-- Second external link -->
+                    <div class="external-link">
+                        <a href="https://ihip.mohfw.gov.in/idsp/#!/home" target="_blank">View IDSP Portal</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" onclick="openTab('register')">Registration</div>
+                <div class="tab" onclick="openTab('search')">Search</div>
+            </div>
+            
+            <!-- Registration Tab -->
+            <div id="register" class="tab-content active">
+                <h2>New Patient Registration</h2>
+                <div class="token-display" id="tokenDisplay">Token: Generating...</div>
+                
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="tokenNumber">Token Number:</label>
+                        <input type="text" id="tokenNumber" name="tokenNumber" placeholder="Leave blank to auto-generate">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" min="0" max="120" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" rows="3"></textarea>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <button type="submit" class="btn btn-primary">Register Patient</button>
+                        <button type="reset" class="btn btn-secondary">Clear Form</button>
+                    </div>
+                    <div class="auto-save-status" id="saveStatus">All changes are automatically saved</div>
+                </form>
+            </div>
+            
+            <!-- Search Tab -->
+            <div id="search" class="tab-content">
+                <h2>Patient Search</h2>
+                
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search by name, token, or phone..." autocomplete="off">
+                    <button class="btn btn-primary" onclick="searchPatient()">Search</button>
+                    <div class="search-suggestions" id="searchSuggestions"></div>
+                </div>
+                
+                <div id="searchResults" class="search-results">
+                    <table id="patientsTable">
+                        <thead>
+                            <tr>
+                                <th>Token</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Gender</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Patient data will appear here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="patientDetails" class="patient-details">
+                    <div class="patient-header">
+                        <div class="patient-header-item">Last Name: <span id="detailLastName"></span></div>
+                        <div class="patient-header-item">Date: <span id="detailDate"></span></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Token Number:</div>
+                        <div id="detailToken"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Full Name:</div>
+                        <div id="detailName"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Age:</div>
+                        <div id="detailAge"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Gender:</div>
+                        <div id="detailGender"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Phone:</div>
+                        <div id="detailPhone"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Address:</div>
+                        <div id="detailAddress"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <footer>
+                &copy; <span id="currentYear"></span> Urban Health and Wellness Center | Developed by Vishwajeet Patel
+            </footer>
+        </div>
+
+        <!-- Edit Patient Modal -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <h2>Edit Patient</h2>
+                <form id="editForm">
+                    <input type="hidden" id="editPatientId">
+                    <div class="form-group">
+                        <label for="editTokenNumber">Token Number:</label>
+                        <input type="text" id="editTokenNumber" name="tokenNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editFirstName">First Name</label>
+                        <input type="text" id="editFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editLastName">Last Name</label>
+                        <input type="text" id="editLastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDate">Date:</label>
+                        <input type="date" id="editDate" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editAge">Age</label>
+                        <input type="number" id="editAge" min="0" max="120" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editGender">Gender</label>
+                        <select id="editGender" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPhone">Phone</label>
+                        <input type="tel" id="editPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editAddress">Address</label>
+                        <textarea id="editAddress" rows="3" required></textarea>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile App View Content -->
+    <div class="mobile-view">
+        <div class="app-container">
+            <div class="app-header">
+                <h1>🏥 UHWC</h1>
+                <div class="device-info" id="mobileDeviceInfo">
+                    <div id="mobileBatteryLevel">...</div>
+                </div>
+            </div>
+            
+            <div class="app-content">
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <div>Today's OPD</div>
+                        <div class="stat-value" id="mobileTodayCount">0</div>
+                        <div class="ip-display">
+                            <span id="mobileVisitorIp">Loading...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div>This Month's OPD</div>
+                        <div class="stat-value" id="mobileMonthCount">0</div>
+                        <div class="ip-display">
+                            <span>Visitors: <span id="mobileLiveVisitorCount">1</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div>This Year's OPD</div>
+                        <div class="stat-value" id="mobileYearCount">0</div>
+                        <button class="toggle-breakdown" onclick="toggleMonthlyBreakdown('mobile')">▼ Breakdown</button>
+                        <div class="monthly-breakdown" id="mobileMonthlyBreakdown"></div>
+                    </div>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" onclick="openMobileTab('register')">Registration</div>
+                    <div class="tab" onclick="openMobileTab('search')">Search</div>
+                </div>
+                
+                <!-- Mobile Registration Tab -->
+                <div id="mobileRegister" class="tab-content active">
+                    <h3>New Patient Registration</h3>
+                    <div class="token-display" id="mobileTokenDisplay">Token: Generating...</div>
+                    
+                    <form id="mobileRegistrationForm">
+                        <div class="form-group">
+                            <label for="mobileTokenNumber">Token Number:</label>
+                            <input type="text" id="mobileTokenNumber" name="tokenNumber" placeholder="Auto-generate">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="mobileFirstName">First Name</label>
+                            <input type="text" id="mobileFirstName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="mobileLastName">Last Name</label>
+                            <input type="text" id="mobileLastName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="mobileDate">Date:</label>
+                            <input type="date" id="mobileDate" name="date" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="mobileAge">Age</label>
+                            <input type="number" id="mobileAge" min="0" max="120" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="mobileGender">Gender</label>
+                            <select id="mobileGender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="mobilePhone">Phone Number</label>
+                            <input type="tel" id="mobilePhone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="mobileAddress">Address</label>
+                            <textarea id="mobileAddress" rows="3"></textarea>
+                        </div>
+                        
+                        <div style="margin-top: 20px;">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                            <button type="reset" class="btn btn-secondary">Clear</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Mobile Search Tab -->
+                <div id="mobileSearch" class="tab-content">
+                    <h3>Patient Search</h3>
+                    
+                    <div class="search-box">
+                        <input type="text" id="mobileSearchInput" placeholder="Search patients..." autocomplete="off">
+                        <button class="btn btn-primary" onclick="mobileSearchPatient()">Search</button>
+                        <div class="search-suggestions" id="mobileSearchSuggestions"></div>
+                    </div>
+                    
+                    <div id="mobileSearchResults">
+                        <table id="mobilePatientsTable">
+                            <thead>
+                                <tr>
+                                    <th>Token</th>
+                                    <th>Name</th>
+                                    <th>Age</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Mobile patient data will appear here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="mobilePatientDetails" class="patient-details">
+                        <div class="patient-header">
+                            <div class="patient-header-item">Name: <span id="mobileDetailName"></span></div>
+                            <div class="patient-header-item">Date: <span id="mobileDetailDate"></span></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Token:</div>
+                            <div id="mobileDetailToken"></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Age:</div>
+                            <div id="mobileDetailAge"></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Gender:</div>
+                            <div id="mobileDetailGender"></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Phone:</div>
+                            <div id="mobileDetailPhone"></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Address:</div>
+                            <div id="mobileDetailAddress"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="app-footer">
+                <a href="#" class="footer-tab active" onclick="openMobileTab('register')">
+                    <span class="footer-icon">📝</span>
+                    <span>Register</span>
+                </a>
+                <a href="#" class="footer-tab" onclick="openMobileTab('search')">
+                    <span class="footer-icon">🔍</span>
+                    <span>Search</span>
+                </a>
+                <a href="#" class="footer-tab" onclick="showMobileStats()">
+                    <span class="footer-icon">📊</span>
+                    <span>Stats</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio element for success sound (hidden) -->
+    <audio id="successSound" src="https://www.soundjay.com/buttons/sounds/button-09.mp3" preload="auto"></audio>
+
+    <script>
+        // Patient database
+        let patients = [];
+        let currentTokenNumber = 1;
+        let isSaving = false;
+        let visitorCount = 1;
+        let searchDebounceTimer;
+        
+        // Initialize IndexedDB for persistent storage
+        let db;
+        const DB_NAME = 'UHWC_PatientDB';
+        const STORE_NAME = 'patients';
+        
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, 1);
+                
+                request.onerror = function(event) {
+                    console.error("Database error:", event.target.error);
+                    // Fallback to localStorage if IndexedDB fails
+                    loadFromLocalStorage();
+                    resolve();
+                };
+                
+                request.onsuccess = function(event) {
+                    db = event.target.result;
+                    loadPatients().then(resolve);
+                };
+                
+                request.onupgradeneeded = function(event) {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+                    }
+                };
+            });
+        }
+        
+        // Load patients from IndexedDB
+        function loadPatients() {
+            return new Promise((resolve) => {
+                if (!db) {
+                    loadFromLocalStorage();
+                    resolve();
+                    return;
+                }
+                
+                const transaction = db.transaction(STORE_NAME, 'readonly');
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.getAll();
+                
+                request.onsuccess = function() {
+                    patients = request.result || [];
+                    if (patients.length > 0) {
+                        const tokens = patients.map(p => p.token);
+                        const numbers = tokens.map(t => {
+                            const parts = t.split('-');
+                            return parseInt(parts[parts.length - 1]);
+                        });
+                        currentTokenNumber = Math.max(...numbers) + 1;
+                    }
+                    updateStats(); // Update counts after loading
+                    resolve();
+                };
+                
+                request.onerror = function() {
+                    loadFromLocalStorage();
+                    resolve();
+                };
+            });
+        }
+        
+        // Fallback to localStorage
+        function loadFromLocalStorage() {
+            const savedData = localStorage.getItem('uhwc_patients');
+            if (savedData) {
+                patients = JSON.parse(savedData);
+                if (patients.length > 0) {
+                    const tokens = patients.map(p => p.token);
+                    const numbers = tokens.map(t => {
+                        const parts = t.split('-');
+                        return parseInt(parts[parts.length - 1]);
+                    });
+                    currentTokenNumber = Math.max(...numbers) + 1;
+                }
+            }
+            updateStats(); // Update counts after loading
+        }
+        
+        // Save patients to IndexedDB with fallback to localStorage
+        function savePatients() {
+            if (isSaving) return;
+            isSaving = true;
+            
+            // Update save status
+            const statusElement = document.getElementById('saveStatus');
+            statusElement.textContent = "Saving data...";
+            statusElement.style.color = "var(--info)";
+            
+            // Try IndexedDB first
+            if (db) {
+                const transaction = db.transaction(STORE_NAME, 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+                
+                // Clear existing data
+                store.clear().onsuccess = function() {
+                    // Add all patients
+                    patients.forEach(patient => {
+                        store.put(patient);
+                    });
+                    
+                    transaction.oncomplete = function() {
+                        saveComplete();
+                    };
+                    
+                    transaction.onerror = function() {
+                        // Fallback to localStorage
+                        localStorage.setItem('uhwc_patients', JSON.stringify(patients));
+                        localStorage.setItem('uhwc_token_counter', currentTokenNumber.toString());
+                        saveComplete();
+                    };
+                };
+            } else {
+                // Fallback to localStorage
+                localStorage.setItem('uhwc_patients', JSON.stringify(patients));
+                localStorage.setItem('uhwc_token_counter', currentTokenNumber.toString());
+                saveComplete();
+            }
+        }
+        
+        function saveComplete() {
+            isSaving = false;
+            const statusElement = document.getElementById('saveStatus');
+            statusElement.textContent = "All changes are automatically saved";
+            statusElement.style.color = "var(--success)";
+            
+            // Flash confirmation
+            statusElement.style.fontWeight = "bold";
+            setTimeout(() => {
+                statusElement.style.fontWeight = "normal";
+            }, 1000);
+            
+            // Update counts after saving
+            updateStats();
+        }
+        
+        // Toggle monthly breakdown visibility
+        function toggleMonthlyBreakdown(type = 'pc') {
+            const breakdown = document.getElementById(type === 'mobile' ? 'mobileMonthlyBreakdown' : 'monthlyBreakdown');
+            const button = document.querySelector(type === 'mobile' ? '.mobile-view .toggle-breakdown' : '.toggle-breakdown');
+            
+            breakdown.classList.toggle('show');
+            button.textContent = breakdown.classList.contains('show') ? '▲ Hide' : '▼ Breakdown';
+        }
+        
+        // Update statistics (today's, monthly, and yearly counts)
+        function updateStats() {
+            const today = new Date().toISOString().split('T')[0];
+            const currentMonth = new Date().getMonth() + 1;
+            const currentYear = new Date().getFullYear();
+            
+            // Count today's registrations
+            const todayCount = patients.filter(patient => {
+                const patientDate = patient.date || patient.registrationDate.split('T')[0];
+                return patientDate === today;
+            }).length;
+            
+            // Count this month's registrations
+            const monthCount = patients.filter(patient => {
+                const patientDate = new Date(patient.date || patient.registrationDate);
+                return patientDate.getMonth() + 1 === currentMonth && 
+                       patientDate.getFullYear() === currentYear;
+            }).length;
+            
+            // Count this year's registrations
+            const yearCount = patients.filter(patient => {
+                const patientDate = new Date(patient.date || patient.registrationDate);
+                return patientDate.getFullYear() === currentYear;
+            }).length;
+            
+            // Update PC view
+            document.getElementById('todayCount').textContent = todayCount;
+            document.getElementById('monthCount').textContent = monthCount;
+            document.getElementById('yearCount').textContent = yearCount;
+            
+            // Update mobile view
+            document.getElementById('mobileTodayCount').textContent = todayCount;
+            document.getElementById('mobileMonthCount').textContent = monthCount;
+            document.getElementById('mobileYearCount').textContent = yearCount;
+            
+            // Update monthly breakdown
+            updateMonthlyBreakdown(currentYear);
+            updateMonthlyBreakdown(currentYear, 'mobile');
+            
+            // Update last updated time
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = now.toLocaleTimeString();
+            
+            // Update visitor count (simulated - in a real app this would come from server)
+            document.getElementById('liveVisitorCount').textContent = visitorCount;
+            document.getElementById('mobileLiveVisitorCount').textContent = visitorCount;
+            
+            // Get visitor IP (using a free API)
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('visitorIp').textContent = `Your IP: ${data.ip}`;
+                    document.getElementById('mobileVisitorIp').textContent = `IP: ${data.ip}`;
+                })
+                .catch(() => {
+                    document.getElementById('visitorIp').textContent = 'IP: Not available';
+                    document.getElementById('mobileVisitorIp').textContent = 'IP: Not available';
+                });
+        }
+        
+        // Update monthly breakdown data
+        function updateMonthlyBreakdown(year, type = 'pc') {
+            const monthlyData = {};
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                               "July", "August", "September", "October", "November", "December"];
+            
+            // Initialize all months with 0 count
+            monthNames.forEach((month, index) => {
+                monthlyData[index + 1] = { name: month, count: 0 };
+            });
+            
+            // Count patients for each month
+            patients.forEach(patient => {
+                const patientDate = new Date(patient.date || patient.registrationDate);
+                if (patientDate.getFullYear() === year) {
+                    const month = patientDate.getMonth() + 1;
+                    monthlyData[month].count++;
+                }
+            });
+            
+            // Display the monthly breakdown
+            const breakdownElement = document.getElementById(type === 'mobile' ? 'mobileMonthlyBreakdown' : 'monthlyBreakdown');
+            breakdownElement.innerHTML = '';
+            
+            // Add current year header
+            const yearHeader = document.createElement('div');
+            yearHeader.style.fontWeight = 'bold';
+            yearHeader.style.marginBottom = '10px';
+            yearHeader.style.borderBottom = '1px solid #ddd';
+            yearHeader.style.paddingBottom = '5px';
+            yearHeader.textContent = `Year: ${year}`;
+            breakdownElement.appendChild(yearHeader);
+            
+            // Add monthly data
+            Object.values(monthlyData).forEach(month => {
+                const monthItem = document.createElement('div');
+                monthItem.className = 'month-item';
+                
+                const monthName = document.createElement('span');
+                monthName.className = 'month-name';
+                monthName.textContent = month.name;
+                
+                const monthCount = document.createElement('span');
+                monthCount.className = 'month-count';
+                monthCount.textContent = month.count;
+                
+                monthItem.appendChild(monthName);
+                monthItem.appendChild(monthCount);
+                breakdownElement.appendChild(monthItem);
+            });
+            
+            // Add total for the year
+            const totalItem = document.createElement('div');
+            totalItem.className = 'month-item';
+            totalItem.style.fontWeight = 'bold';
+            totalItem.style.marginTop = '10px';
+            totalItem.style.borderTop = '1px solid #ddd';
+            totalItem.style.paddingTop = '5px';
+            
+            const totalLabel = document.createElement('span');
+            totalLabel.className = 'month-name';
+            totalLabel.textContent = 'Total';
+            
+            const totalCount = document.createElement('span');
+            totalCount.className = 'month-count';
+            totalCount.textContent = Object.values(monthlyData).reduce((sum, month) => sum + month.count, 0);
+            
+            totalItem.appendChild(totalLabel);
+            totalItem.appendChild(totalCount);
+            breakdownElement.appendChild(totalItem);
+        }
+        
+        // Update live date and time
+        function updateLiveDateTime() {
+            const now = new Date();
+            
+            // Format time (HH:MM:SS)
+            const timeStr = now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+            
+            // Format day and date (Weekday, Month Day, Year)
+            const dayDateStr = now.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            // Update PC view
+            document.getElementById('currentTime').textContent = timeStr;
+            document.getElementById('currentDayDate').textContent = dayDateStr;
+        }
+        
+        // Detect device information and battery status
+        function updateDeviceInfo() {
+            // Device name/type detection
+            const userAgent = navigator.userAgent;
+            let deviceName = "Unknown Device";
+            
+            if (/Android/i.test(userAgent)) {
+                deviceName = "Android Device";
+            } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+                deviceName = "iOS Device";
+            } else if (/Windows/i.test(userAgent)) {
+                deviceName = "Windows PC";
+            } else if (/Mac/i.test(userAgent)) {
+                deviceName = "Mac";
+            } else if (/Linux/i.test(userAgent)) {
+                deviceName = "Linux PC";
+            }
+            
+            document.getElementById('deviceName').textContent = deviceName;
+            
+            // Battery status detection
+            if ('getBattery' in navigator) {
+                navigator.getBattery().then(function(battery) {
+                    updateBatteryStatus(battery);
+                    
+                    // Add event listeners for battery changes
+                    battery.addEventListener('levelchange', function() {
+                        updateBatteryStatus(battery);
+                    });
+                    
+                    battery.addEventListener('chargingchange', function() {
+                        updateBatteryStatus(battery);
+                    });
+                });
+            } else {
+                document.getElementById('batteryLevel').textContent = "Battery info not available";
+                document.getElementById('mobileBatteryLevel').textContent = "";
+                document.getElementById('chargingIcon').style.display = 'none';
+            }
+        }
+        
+        // Update battery status display
+        function updateBatteryStatus(battery) {
+            const batteryLevel = Math.round(battery.level * 100);
+            const isCharging = battery.charging;
+            
+            const batteryText = isCharging 
+                ? `${batteryLevel}% (Charging)` 
+                : `${batteryLevel}%`;
+            
+            document.getElementById('batteryLevel').textContent = batteryText;
+            document.getElementById('mobileBatteryLevel').textContent = batteryText;
+            
+            // Change icon color based on battery level
+            const chargingIcon = document.getElementById('chargingIcon');
+            if (isCharging) {
+                chargingIcon.style.fill = "#4CAF50"; // Green when charging
+            } else if (batteryLevel < 20) {
+                chargingIcon.style.fill = "#F44336"; // Red when low
+            } else {
+                chargingIcon.style.fill = "white"; // White otherwise
+            }
+            
+            // Show/hide charging icon
+            if (chargingIcon) {
+                chargingIcon.style.display = isCharging ? 'inline-block' : 'none';
+            }
+        }
+        
+        // Format date for display
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+        
+        // Generate token
+        function generateToken() {
+            const year = new Date().getFullYear();
+            const token = `UHWC-${year}-${currentTokenNumber.toString().padStart(4, '0')}`;
+            currentTokenNumber++;
+            return token;
+        }
+        
+        // Update token display
+        function updateTokenDisplay() {
+            const token = generateToken();
+            document.getElementById('tokenDisplay').textContent = `Token: ${token}`;
+            document.getElementById('tokenNumber').value = token;
+            document.getElementById('mobileTokenDisplay').textContent = `Token: ${token}`;
+            document.getElementById('mobileTokenNumber').value = token;
+        }
+        
+        // Play success sound and speak confirmation
+        function playSuccessSound() {
+            // Play sound effect
+            const sound = document.getElementById('successSound');
+            sound.currentTime = 0; // Rewind to start
+            sound.play();
+            
+            // Speak confirmation if browser supports speech synthesis
+            if ('speechSynthesis' in window) {
+                const speech = new SpeechSynthesisUtterance();
+                speech.text = "Patient registered successfully!";
+                speech.volume = 1;
+                speech.rate = 1;
+                speech.pitch = 1;
+                window.speechSynthesis.speak(speech);
+            }
+        }
+        
+        // Tab switching for PC view
+        function openTab(tabName) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+            
+            if (tabName === 'search') {
+                renderPatientTable();
+            }
+        }
+        
+        // Tab switching for mobile view
+        function openMobileTab(tabName) {
+            const tabContents = document.querySelectorAll('.mobile-view .tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            
+            const tabs = document.querySelectorAll('.mobile-view .footer-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            document.getElementById('mobile' + tabName.charAt(0).toUpperCase() + tabName.slice(1)).classList.add('active');
+            event.currentTarget.classList.add('active');
+            
+            if (tabName === 'search') {
+                renderMobilePatientTable();
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        function showMobileStats() {
+            openMobileTab('register');
+            // Scroll to stats section
+            document.querySelector('.mobile-view .stats-container').scrollIntoView();
+        }
+        
+        // Register new patient (PC view)
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let token = document.getElementById('tokenNumber').value.trim();
+            if (!token) {
+                token = document.getElementById('tokenDisplay').textContent.replace('Token: ', '');
+            }
+            
+            const newPatient = {
+                id: Date.now().toString(),
+                token,
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                date: document.getElementById('date').value,
+                age: document.getElementById('age').value,
+                gender: document.getElementById('gender').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                registrationDate: new Date().toISOString()
+            };
+            
+            patients.push(newPatient);
+            savePatients();
+            
+            // Play success sound and speak confirmation
+            playSuccessSound();
+            
+            this.reset();
+            updateTokenDisplay();
+            
+            // Auto switch to search tab and show the new patient
+            openTab('search');
+            showPatientDetails(newPatient);
+        });
+        
+        // Register new patient (Mobile view)
+        document.getElementById('mobileRegistrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let token = document.getElementById('mobileTokenNumber').value.trim();
+            if (!token) {
+                token = document.getElementById('mobileTokenDisplay').textContent.replace('Token: ', '');
+            }
+            
+            const newPatient = {
+                id: Date.now().toString(),
+                token,
+                firstName: document.getElementById('mobileFirstName').value,
+                lastName: document.getElementById('mobileLastName').value,
+                date: document.getElementById('mobileDate').value,
+                age: document.getElementById('mobileAge').value,
+                gender: document.getElementById('mobileGender').value,
+                phone: document.getElementById('mobilePhone').value,
+                address: document.getElementById('mobileAddress').value,
+                registrationDate: new Date().toISOString()
+            };
+            
+            patients.push(newPatient);
+            savePatients();
+            
+            // Play success sound and speak confirmation
+            playSuccessSound();
+            
+            this.reset();
+            updateTokenDisplay();
+            
+            // Auto switch to search tab and show the new patient
+            openMobileTab('search');
+            showMobilePatientDetails(newPatient);
+        });
+        
+        // Highlight matching text in search results
+        function highlightText(text, searchTerm) {
+            if (!searchTerm) return text;
+            
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+        
+        // Enhanced search with partial matching and relevance sorting
+        function enhancedSearch(term) {
+            if (!term) return [];
+            
+            const searchTerm = term.toLowerCase();
+            const results = [];
+            
+            patients.forEach(patient => {
+                const fullName = `${patient.firstName} ${patient.lastName}`.toLowerCase();
+                const token = patient.token.toLowerCase();
+                const phone = patient.phone.toLowerCase();
+                
+                // Calculate relevance score
+                let score = 0;
+                
+                // Exact matches get highest score
+                if (fullName === searchTerm) score += 100;
+                if (token === searchTerm) score += 100;
+                if (phone === searchTerm) score += 100;
+                
+                // Partial matches
+                if (fullName.includes(searchTerm)) score += 50;
+                if (token.includes(searchTerm)) score += 40;
+                if (phone.includes(searchTerm)) score += 30;
+                
+                // First name or last name starts with search term
+                if (patient.firstName.toLowerCase().startsWith(searchTerm)) score += 20;
+                if (patient.lastName.toLowerCase().startsWith(searchTerm)) score += 20;
+                
+                if (score > 0) {
+                    results.push({
+                        patient,
+                        score,
+                        fullName: `${patient.firstName} ${patient.lastName}`,
+                        token: patient.token,
+                        phone: patient.phone
+                    });
+                }
+            });
+            
+            // Sort by relevance score (highest first)
+            return results.sort((a, b) => b.score - a.score);
+        }
+        
+        // Show search suggestions
+        function showSearchSuggestions(searchTerm, type = 'pc') {
+            const suggestionsContainer = document.getElementById(type === 'mobile' ? 'mobileSearchSuggestions' : 'searchSuggestions');
+            suggestionsContainer.innerHTML = '';
+            
+            if (!searchTerm || searchTerm.length < 2) {
+                suggestionsContainer.classList.remove('show');
+                return;
+            }
+            
+            const results = enhancedSearch(searchTerm).slice(0, 5); // Show top 5 results
+            
+            if (results.length === 0) {
+                suggestionsContainer.classList.remove('show');
+                return;
+            }
+            
+            results.forEach(result => {
+                const suggestionItem = document.createElement('div');
+                suggestionItem.className = 'suggestion-item';
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'suggestion-name';
+                nameSpan.innerHTML = highlightText(result.fullName, searchTerm);
+                
+                const detailsSpan = document.createElement('span');
+                detailsSpan.className = 'suggestion-details';
+                detailsSpan.innerHTML = `
+                    <span>${highlightText(result.token, searchTerm)}</span>
+                    <span>${highlightText(result.phone, searchTerm)}</span>
+                `;
+                
+                suggestionItem.appendChild(nameSpan);
+                suggestionItem.appendChild(detailsSpan);
+                
+                suggestionItem.addEventListener('click', () => {
+                    const searchInput = document.getElementById(type === 'mobile' ? 'mobileSearchInput' : 'searchInput');
+                    searchInput.value = result.fullName;
+                    suggestionsContainer.classList.remove('show');
+                    if (type === 'mobile') {
+                        mobileSearchPatient();
+                    } else {
+                        searchPatient();
+                    }
+                });
+                
+                suggestionsContainer.appendChild(suggestionItem);
+            });
+            
+            suggestionsContainer.classList.add('show');
+        }
+        
+        // Search patient with debounce (PC view)
+        function handleSearchInput() {
+            clearTimeout(searchDebounceTimer);
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            
+            if (searchTerm.length >= 2) {
+                searchDebounceTimer = setTimeout(() => {
+                    showSearchSuggestions(searchTerm);
+                }, 300);
+            } else {
+                document.getElementById('searchSuggestions').classList.remove('show');
+            }
+        }
+        
+        // Search patient with debounce (Mobile view)
+        function handleMobileSearchInput() {
+            clearTimeout(searchDebounceTimer);
+            const searchTerm = document.getElementById('mobileSearchInput').value.trim();
+            
+            if (searchTerm.length >= 2) {
+                searchDebounceTimer = setTimeout(() => {
+                    showSearchSuggestions(searchTerm, 'mobile');
+                }, 300);
+            } else {
+                document.getElementById('mobileSearchSuggestions').classList.remove('show');
+            }
+        }
+        
+        // Search patient (PC view)
+        function searchPatient() {
+            const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+            const results = enhancedSearch(searchTerm).map(r => r.patient);
+            
+            renderPatientTable(results);
+            
+            if (results.length === 1) {
+                showPatientDetails(results[0]);
+            } else {
+                document.getElementById('patientDetails').style.display = 'none';
+            }
+            
+            // Hide suggestions after search
+            document.getElementById('searchSuggestions').classList.remove('show');
+        }
+        
+        // Search patient (Mobile view)
+        function mobileSearchPatient() {
+            const searchTerm = document.getElementById('mobileSearchInput').value.trim().toLowerCase();
+            const results = enhancedSearch(searchTerm).map(r => r.patient);
+            
+            renderMobilePatientTable(results);
+            
+            if (results.length === 1) {
+                showMobilePatientDetails(results[0]);
+            } else {
+                document.getElementById('mobilePatientDetails').style.display = 'none';
+            }
+            
+            // Hide suggestions after search
+            document.getElementById('mobileSearchSuggestions').classList.remove('show');
+        }
+        
+        // Render patient table (PC view)
+        function renderPatientTable(patientList = patients) {
+            const tableBody = document.querySelector('#patientsTable tbody');
+            tableBody.innerHTML = '';
+            
+            const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+            
+            patientList.forEach(patient => {
+                const row = document.createElement('tr');
+                
+                const fullName = `${patient.firstName} ${patient.lastName}`;
+                const highlightedName = highlightText(fullName, searchTerm);
+                const highlightedToken = highlightText(patient.token, searchTerm);
+                
+                row.innerHTML = `
+                    <td>${highlightedToken}</td>
+                    <td>${highlightedName}</td>
+                    <td>${patient.age}</td>
+                    <td>${patient.gender}</td>
+                    <td>
+                        <button class="btn btn-primary" onclick="editPatient('${patient.id}')">Edit</button>
+                        <button class="btn btn-danger" onclick="deletePatient('${patient.id}')">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Render patient table (Mobile view)
+        function renderMobilePatientTable(patientList = patients) {
+            const tableBody = document.querySelector('#mobilePatientsTable tbody');
+            tableBody.innerHTML = '';
+            
+            const searchTerm = document.getElementById('mobileSearchInput').value.trim().toLowerCase();
+            
+            patientList.forEach(patient => {
+                const row = document.createElement('tr');
+                
+                const fullName = `${patient.firstName} ${patient.lastName}`;
+                const highlightedName = highlightText(fullName, searchTerm);
+                const highlightedToken = highlightText(patient.token, searchTerm);
+                
+                row.innerHTML = `
+                    <td>${highlightedToken}</td>
+                    <td>${highlightedName}</td>
+                    <td>${patient.age}</td>
+                    <td>
+                        <button class="btn btn-primary" onclick="editPatient('${patient.id}')">Edit</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Show patient details (PC view)
+        function showPatientDetails(patient) {
+            const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+            
+            document.getElementById('detailLastName').textContent = patient.lastName;
+            document.getElementById('detailDate').textContent = formatDate(patient.date || patient.registrationDate);
+            document.getElementById('detailToken').innerHTML = highlightText(patient.token, searchTerm);
+            document.getElementById('detailName').innerHTML = highlightText(`${patient.firstName} ${patient.lastName}`, searchTerm);
+            document.getElementById('detailAge').textContent = patient.age;
+            document.getElementById('detailGender').textContent = patient.gender;
+            document.getElementById('detailPhone').innerHTML = highlightText(patient.phone, searchTerm);
+            document.getElementById('detailAddress').textContent = patient.address;
+            
+            document.getElementById('patientDetails').style.display = 'block';
+        }
+        
+        // Show patient details (Mobile view)
+        function showMobilePatientDetails(patient) {
+            const searchTerm = document.getElementById('mobileSearchInput').value.trim().toLowerCase();
+            
+            document.getElementById('mobileDetailName').innerHTML = highlightText(`${patient.firstName} ${patient.lastName}`, searchTerm);
+            document.getElementById('mobileDetailDate').textContent = formatDate(patient.date || patient.registrationDate);
+            document.getElementById('mobileDetailToken').innerHTML = highlightText(patient.token, searchTerm);
+            document.getElementById('mobileDetailAge').textContent = patient.age;
+            document.getElementById('mobileDetailGender').textContent = patient.gender;
+            document.getElementById('mobileDetailPhone').innerHTML = highlightText(patient.phone, searchTerm);
+            document.getElementById('mobileDetailAddress').textContent = patient.address;
+            
+            document.getElementById('mobilePatientDetails').style.display = 'block';
+            
+            // Scroll to details
+            document.getElementById('mobilePatientDetails').scrollIntoView();
+        }
+        
+        // Edit patient
+        function editPatient(patientId) {
+            const patient = patients.find(p => p.id === patientId);
+            if (!patient) return;
+            
+            document.getElementById('editPatientId').value = patient.id;
+            document.getElementById('editTokenNumber').value = patient.token;
+            document.getElementById('editFirstName').value = patient.firstName;
+            document.getElementById('editLastName').value = patient.lastName;
+            document.getElementById('editDate').value = patient.date || patient.registrationDate.split('T')[0];
+            document.getElementById('editAge').value = patient.age;
+            document.getElementById('editGender').value = patient.gender;
+            document.getElementById('editPhone').value = patient.phone;
+            document.getElementById('editAddress').value = patient.address;
+            
+            document.getElementById('editModal').style.display = 'flex';
+        }
+        
+        // Save edited patient
+        document.getElementById('editForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const patientId = document.getElementById('editPatientId').value;
+            const patientIndex = patients.findIndex(p => p.id === patientId);
+            
+            if (patientIndex !== -1) {
+                patients[patientIndex] = {
+                    ...patients[patientIndex],
+                    token: document.getElementById('editTokenNumber').value,
+                    firstName: document.getElementById('editFirstName').value,
+                    lastName: document.getElementById('editLastName').value,
+                    date: document.getElementById('editDate').value,
+                    age: document.getElementById('editAge').value,
+                    gender: document.getElementById('editGender').value,
+                    phone: document.getElementById('editPhone').value,
+                    address: document.getElementById('editAddress').value
+                };
+                
+                savePatients();
+                alert('Patient updated successfully!');
+                closeModal();
+                renderPatientTable();
+                renderMobilePatientTable();
+                showPatientDetails(patients[patientIndex]);
+                showMobilePatientDetails(patients[patientIndex]);
+            }
+        });
+        
+        // Delete patient
+        function deletePatient(patientId) {
+            if (confirm('Are you sure you want to delete this patient?')) {
+                patients = patients.filter(p => p.id !== patientId);
+                savePatients();
+                renderPatientTable();
+                renderMobilePatientTable();
+                document.getElementById('patientDetails').style.display = 'none';
+                document.getElementById('mobilePatientDetails').style.display = 'none';
+                alert('Patient deleted successfully!');
+            }
+        }
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+        
+        // WhatsApp Chat Box functionality
+        document.querySelector('.whatsapp-chat-box').addEventListener('click', () => {
+            window.open('https://wa.me/917436046454', '_blank');
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async function() {
+            await initDB();
+            updateLiveDateTime();
+            setInterval(updateLiveDateTime, 1000);
+            updateTokenDisplay();
+            updateDeviceInfo();
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // Set default date to today
+            document.getElementById('date').valueAsDate = new Date();
+            document.getElementById('mobileDate').valueAsDate = new Date();
+            
+            // Save data when window is closed or refreshed
+            window.addEventListener('beforeunload', function() {
+                if (!isSaving) {
+                    savePatients();
+                }
+            });
+            
+            // Simulate visitor count increment (in a real app this would come from server)
+            setInterval(() => {
+                visitorCount = Math.max(1, Math.floor(Math.random() * 10));
+                document.getElementById('liveVisitorCount').textContent = visitorCount;
+                document.getElementById('mobileLiveVisitorCount').textContent = visitorCount;
+            }, 5000);
+            
+            // Setup search input event listeners (PC view)
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', handleSearchInput);
+            searchInput.addEventListener('focus', handleSearchInput);
+            
+            // Setup search input event listeners (Mobile view)
+            const mobileSearchInput = document.getElementById('mobileSearchInput');
+            mobileSearchInput.addEventListener('input', handleMobileSearchInput);
+            mobileSearchInput.addEventListener('focus', handleMobileSearchInput);
+            
+            // Hide suggestions when clicking outside (PC view)
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-box')) {
+                    document.getElementById('searchSuggestions').classList.remove('show');
+                }
+            });
+            
+            // Hide suggestions when clicking outside (Mobile view)
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.mobile-view .search-box')) {
+                    document.getElementById('mobileSearchSuggestions').classList.remove('show');
+                }
+            });
+            
+            // Allow pressing Enter in search input to trigger search (PC view)
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    searchPatient();
+                }
+            });
+            
+            // Allow pressing Enter in search input to trigger search (Mobile view)
+            mobileSearchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    mobileSearchPatient();
+                }
+            });
+            
+            // Check if mobile device and switch view if needed
+            function checkView() {
+                if (window.innerWidth <= 768) {
+                    document.body.classList.remove('pc-view');
+                    document.body.classList.add('mobile-view');
+                } else {
+                    document.body.classList.remove('mobile-view');
+                    document.body.classList.add('pc-view');
+                }
+            }
+            
+            // Initial check
+            checkView();
+            
+            // Check on resize
+            window.addEventListener('resize', checkView);
+        });
+    </script>
+</body>
+</html>
